@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,27 @@ namespace AM.applicationCore.Domain
     {
 
         public int Id { get; set; }
+
+        [MinLength(3, ErrorMessage = "doit etre min 3"), MaxLength(25, ErrorMessage = "doit etre max 25")]
         public string FirstName { get; set; }
+
+
         public string LastName { get; set; }
+
+
+        [EmailAddress(ErrorMessage = "Invalid Email Address.")]
         public string EmailAddress { get; set; }
+
+
+        [DataType(DataType.Date, ErrorMessage = "ajouter  valid date.")]
+        [Display(Name = "Date of Birth")]
         public DateTime BirthDate { get; set; }
-        public string TelNumber { get; set; }
-        
+
+
+        [RegularExpression(@"^\d{8}$", ErrorMessage = "Phone Number doit etre 8 chiffres.")]
+        public int TelNumber { get; set; }
+        [Key]
+        [StringLength(7)]
         public string PassportNumber { get; set; }
 
 
