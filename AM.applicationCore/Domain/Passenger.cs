@@ -30,6 +30,7 @@ namespace AM.applicationCore.Domain
         [StringLength(7)]
         public string PassportNumber { get; set; }
 
+        public IList<ReservationTicket> Reservations { get; set; }
 
         public ICollection<Flight> Flights { get; set; }
         public bool CheckProfile(string firstName, string lastName)
