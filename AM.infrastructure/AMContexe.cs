@@ -9,7 +9,9 @@ namespace AM.infrastructure
         public DbSet<Plane> Planes { get; set; }
         public DbSet<Flight> Flights { get; set; }
         public DbSet<Passenger> Passengers { get; set; }
-     
+        public DbSet<Staff> Staffs { get; set; }
+        public DbSet<Traveller> Travellers { get; set; }
+
         //chaine de cnx 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -30,7 +32,26 @@ namespace AM.infrastructure
             modelBuilder.Entity<Plane>().ToTable("myPlanes").Property(p=>p.Capacity).HasColumnName("PlaneCapacity");
 
             modelBuilder.ApplyConfiguration(new FlightConfiguration());
+            modelBuilder.Entity<Passenger>().OwnsOne(f => f.fullName,
+                full =>
+                {
+                    full.Property(p => p.FirstName).HasMaxLength(30).HasColumnName("PassFirstName");
+                    full.Property(p => p.LastName).IsRequired().HasColumnName("PassLastName");
+                });
+            //modelBuilder.Entity<Passenger>()
+            //    .HasDiscriminator<int>("IsTraveller")
+            //    .HasValue<Passenger>(0)
+            //    .HasValue<Traveller>(1)
+            //    .HasValue<Staff>(2);
+            modelBuilder.Entity<Traveller>().ToTable("Travellers");
+            modelBuilder.Entity<Staff>().ToTable("Staffs");
+            //modelBuilder.Entity<ReservationTicket>().HasKey(k => new
+            //{
+            //    k.TicketFK,
+            //    k.PassengerFK,
+            //    k.ReservationDate
 
+            //});
 
         }
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

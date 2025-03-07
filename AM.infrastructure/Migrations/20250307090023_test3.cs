@@ -5,7 +5,7 @@
 namespace AM.infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class annotation1 : Migration
+    public partial class test3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -8,10 +8,11 @@ using AM.applicationCore.Services;
 ////initialisateur 
 //Plane p3 = new Plane { Capacity = 50 };
 //Console.WriteLine(p3.ToString());
-Passenger passenger = new Passenger { LastName = "ons", FirstName = "fidha" };
+Passenger passenger = new Passenger { fullName=new FullName { LastName = "ons", FirstName = "fidha" } };
 //Console.WriteLine(passenger.ToString());
 //Console.WriteLine(passenger.CheckProfile("elfidha","ons"));
-Passenger passenger1 = new Passenger { LastName = "nidhal", FirstName = "arfaoui", EmailAddress = "ni@esprit.tn" };
+Passenger passenger1 = new Passenger {
+    fullName = new FullName { LastName = "nidhal", FirstName = "arfaoui" }, EmailAddress = "ni@esprit.tn" };
 //Console.WriteLine(passenger1.CheckProfile("arfaoui", "nidhal", "ni@esprit.tn"));
 //Console.WriteLine(passenger1.CheckProfile1("arfaoui", "nidhal"));
 //Staff staff= new Staff();
@@ -38,7 +39,7 @@ Console.WriteLine(flightService.ProgrammedFlightNumber(testDate));
 Console.WriteLine("******** fonction extension******");
 
 passenger.UpperFullName();
-Console.WriteLine(passenger.FirstName+' '+passenger.LastName);
+Console.WriteLine(passenger.fullName.FirstName + ' '+passenger.fullName.LastName);
 
 passenger1.UpperFullName();
-Console.WriteLine(passenger1.FirstName + ' ' + passenger1.LastName);
+Console.WriteLine(passenger1.fullName.FirstName + ' ' + passenger1.fullName.LastName);

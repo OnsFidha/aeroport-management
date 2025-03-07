@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AM.infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    [Migration("20250228105325_annotation3")]
-    partial class annotation3
+    [Migration("20250307085504_test1")]
+    partial class test1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,17 +77,11 @@ namespace AM.infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IsTraveller")
+                        .HasColumnType("int");
 
                     b.Property<int>("TelNumber")
                         .HasColumnType("int");
@@ -95,6 +89,10 @@ namespace AM.infrastructure.Migrations
                     b.HasKey("PassportNumber");
 
                     b.ToTable("Passengers");
+
+                    b.HasDiscriminator<int>("IsTraveller").HasValue(0);
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("AM.applicationCore.Domain.Plane", b =>
@@ -135,6 +133,38 @@ namespace AM.infrastructure.Migrations
                     b.ToTable("assosiative_table", (string)null);
                 });
 
+            modelBuilder.Entity("AM.applicationCore.Domain.Staff", b =>
+                {
+                    b.HasBaseType("AM.applicationCore.Domain.Passenger");
+
+                    b.Property<DateTime>("EmployementDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Function")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Salary")
+                        .HasColumnType("float");
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("AM.applicationCore.Domain.Traveller", b =>
+                {
+                    b.HasBaseType("AM.applicationCore.Domain.Passenger");
+
+                    b.Property<string>("HealthInformation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nationality")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
             modelBuilder.Entity("AM.applicationCore.Domain.Flight", b =>
                 {
                     b.HasOne("AM.applicationCore.Domain.Plane", "Plane")
@@ -144,6 +174,36 @@ namespace AM.infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Plane");
+                });
+
+            modelBuilder.Entity("AM.applicationCore.Domain.Passenger", b =>
+                {
+                    b.OwnsOne("AM.applicationCore.Domain.FullName", "fullName", b1 =>
+                        {
+                            b1.Property<string>("PassengerPassportNumber")
+                                .HasColumnType("nvarchar(7)");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(30)
+                                .HasColumnType("nvarchar(30)")
+                                .HasColumnName("PassFirstName");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("PassLastName");
+
+                            b1.HasKey("PassengerPassportNumber");
+
+                            b1.ToTable("Passengers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PassengerPassportNumber");
+                        });
+
+                    b.Navigation("fullName")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FlightPassenger", b =>

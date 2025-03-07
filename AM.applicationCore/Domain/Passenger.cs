@@ -12,11 +12,7 @@ namespace AM.applicationCore.Domain
 
         public int Id { get; set; }
 
-        [MinLength(3, ErrorMessage = "doit etre min 3"), MaxLength(25, ErrorMessage = "doit etre max 25")]
-        public string FirstName { get; set; }
-
-
-        public string LastName { get; set; }
+        public   FullName fullName { get; set; }
 
 
         [EmailAddress(ErrorMessage = "Invalid Email Address.")]
@@ -38,12 +34,12 @@ namespace AM.applicationCore.Domain
         public ICollection<Flight> Flights { get; set; }
         public bool CheckProfile(string firstName, string lastName)
         {
-            return FirstName == firstName && LastName == lastName;
+            return fullName.FirstName == firstName && fullName.LastName == lastName;
         }
 
         public bool CheckProfile(string firstName, string lastName, string email)
         {
-            return FirstName == firstName && LastName == lastName && EmailAddress == email;
+            return fullName.FirstName == firstName && fullName.LastName == lastName && EmailAddress == email;
         }
 
         public bool CheckProfile1(string firstName, string lastName, string email = null)
@@ -65,7 +61,7 @@ namespace AM.applicationCore.Domain
 
         public override string ToString()
         {
-            return $"Passenger: {FirstName} {LastName}, Email: {EmailAddress}, BirthDate: {BirthDate.ToShortDateString()}";
+            return $"Passenger: {fullName.FirstName} {fullName.LastName}, Email: {EmailAddress}, BirthDate: {BirthDate.ToShortDateString()}";
         }
     }
 }
